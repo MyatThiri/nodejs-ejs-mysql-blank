@@ -1,6 +1,6 @@
 var mysql = require('mysql');
 
-var pool = msql.createPool({
+var pool = mysql.createPool({
   connectionLimit : 10,
   host            : 'localhost',
   user            : 'user_blank',
