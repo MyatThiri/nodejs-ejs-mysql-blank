@@ -59,4 +59,22 @@ router.post('/signin', function(req, res, next) {
     }
     });
   });
+
+  /* GET login page. */
+  router.get('/login', function(req, res, next){
+    res.render('commons/login', {title:'Login'});
+  });
+
+    /* POST login page. */
+    router.post('/login', function(req, res, next){
+      User.findByEmail(req.body.email, function(err,users){
+        if(err) next (err);
+        if(users.length == 0 || !User.compare(req.body.password,users[0].password)){
+          res.json({ status: false, msg:'Email not exists or password not matched!!'});
+        }else{
+            req.session.users = { uid:users[0].uid,uname:users[0].name, email:users[0].email }
+            res.json({ status: true});
+        }
+        });
+    });
 module.exports = router;
