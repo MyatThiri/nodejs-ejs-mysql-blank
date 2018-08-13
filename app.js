@@ -7,7 +7,9 @@ var session = require('express-session');
 var flash = require('express-flash');
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+// var usersRouter = require('./routes/users');
+var admin = require('./routes/admin/index');
+var members = require('./routes/members/index');
 
 var app = express();
 
@@ -40,7 +42,9 @@ app.use(function(req, res, next) {
 });
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+// app.use('/users', usersRouter);
+app.use('/members', members);
+app.use('/admin',admin);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
