@@ -24,7 +24,7 @@ router.post('/signup', function(req, res, next) {
     }else{
       User.add(params, function(err2, result){
         if(err2) throw err2;
-        res.redirect('/signin')
+        res.render('commons/sign-up-success', { title: 'Signup success' });
       });
     }
   });
@@ -45,5 +45,19 @@ router.post('/dupemail', function(req, res, next) {
 router.get('/signin', function(req, res, next) {
   res.render('commons/sign-in', {title: 'Signin'});
 });
+
+/*POST signin action.*/
+router.post('/signin', function(req, res, next) {
+  User.findByEmail(req.body.email, function(err, users) {
+    if(err) next (err);
+    if(users.length == 0 || !User.compare(req.body.password, users[0].password)){
+      req.flash('warning', 'Email not exists or password not matched!!');
+      res.redirect('/signin');
+    }else {
+        req.session.user = { uid: users[0].uid, name: users[0].name, email: users[0].email}
+        res.redirect('/');
+      }
+    });
+  });
 
 module.exports = router;
