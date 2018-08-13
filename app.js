@@ -30,7 +30,13 @@ app.use(session({
   resave: false,
   saveUninitialized: true
 }));
-app.use(flash());
+app.use(flash());// after cookie, session
+
+// Set session for EJS // after session, before routing
+app.use(function(req, res, next){
+  res.locals.user = req.session.user;
+  next();
+});
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
