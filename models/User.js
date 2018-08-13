@@ -8,9 +8,9 @@ var User = {
     return db.query(sql, params, callback);
   },
   findByEmail: function(email, callback){
-    var params = [email];
+    console.log('email',email);
     var sql = 'SELECT * FROM users WHERE email = ?';
-    return db.query(sql, params, callback);
+    return db.query(sql, [email], callback);
   },
   compare: function(cleartext, encrypted){
     return bcrypt.compareSync(cleartext, encrypted);
