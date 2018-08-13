@@ -5,6 +5,18 @@
     <title>Signin</title>
   </head>
   <body>
-    <h1>signin</h1>
+    <form id="signin" action="/signin" method="post">
+      Email: <input type="email" id="email" name="email" value="" required><p>
+      Password: <input type="password" name="password" required> <p>
+      <input type="submit" name="btn" value="Sign in">
+    </form>
   </body>
+  <script type="text/javascript">
+    <% if (messages.warn) { %>
+      alert('<%=messages.warn%>');
+    <%
+        }
+    %>
+  </script>
+
 </html>
