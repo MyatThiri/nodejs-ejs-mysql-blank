@@ -7,15 +7,24 @@
   <body>
     <form action="/signin" method="post">
       Email: <input type="email" name="email" id="email" value="" required><p>
-      Password: <input type="password" name="password" value="" required><p>
+      Password: <input type="password" name="password" id="password" value="" required><p>
+      <label><input type="checkbox" name="rememberme" id="rememberme" value="R">Remember me </label><p>
       <input type="submit" name="signin" value="Sign in">
     </form>
   </body>
+  <script src="/js/jquery.min.js" charset="utf-8"></script>
   <script type="text/javascript">
+  $(function() {
     <%
       if(messages.warning) {
     %>
       alert('<%=messages.warning%>');
     <% } %>
+    <% if(email) {%>
+      $('#rememberme').prop( "checked", true);
+      $('#email').val('<%=email%>');
+      $('#password').focus();
+    <% } %>
+  });
   </script>
 </html>
