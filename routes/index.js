@@ -15,7 +15,7 @@ router.get('/signup', function(req, res, next) {
 
 /* POST signup page. */
 router.post('/signup', function(req, res, next) {
-  var params = [req.body.name, req.body.email, req.body.password];
+  var params = [req.body.name, req.body.email, req.body.password,"USER"];
   User.findByEmail(req.body.email, function(err, rows){
     if(err) throw err;
     if(rows.length > 0){

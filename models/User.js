@@ -3,7 +3,7 @@ var bcrypt = require('bcrypt-nodejs');
 
 var User = {
   add: function(params, callback){
-    var sql = "INSERT INTO users (name, email, password,role) VALUES (?, ?, ?,?)";
+    var sql = "INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)";
     params[2] = bcrypt.hashSync(params[2], bcrypt.genSaltSync(8), null);
     return db.query(sql, params, callback);
   },
@@ -37,6 +37,17 @@ var User = {
   }
     return db.query(sql, p, callback);
   },
+
+  update: function(params, callback) {
+   var sql = "UPDATE users SET name =?, role = ?, updated = NOW() WHERE uid = ?";
+   return db.query(sql, params, callback);
+ },
+
+ remove: function(uid, callback) {
+   console.log('do');
+   var sql = "DELETE FROM users WHERE uid = ?";
+   return db.query(sql, [uid], callback);
+ },
 
   compare: function(cleartext, encrypted){
     return bcrypt.compareSync(cleartext, encrypted);
