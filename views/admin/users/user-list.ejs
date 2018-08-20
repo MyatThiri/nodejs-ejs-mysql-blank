@@ -17,7 +17,12 @@
   <body>
 
     <h1>User List</h1>
-    <form action="/admin/users/list" method="post">
+    <form id="frm" action="/admin/users/list" method="post">
+    <select class="" name="role">
+      <option value="">All</option>
+      <option value="Admin">Admin</option>
+      <option value="User">User</option>
+    </select>
       <input type="search" name="keyword" value="<%= search.keyword || '' %>">
       <input type="submit" name="" value="Search">
     </form>
@@ -33,6 +38,10 @@
         </tr>
       </thead>
       <tbody>
+        <% if (users.length == 0) { %>
+          <td colspan="5">No data found!</td>
+        <%  } %>
+        
         <% for (var i = 0; i < users.length; i++){ %>
           <tr>
             <td><%= i+1 %></td>
@@ -45,4 +54,9 @@
       </tbody>
     </table>
   </body>
+  <script type="text/javascript">
+    <% if (search.role) { %>
+      frm.role.value = '<%= search.role %>'
+    <% } %>
+  </script>
 </html>
