@@ -2,6 +2,7 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
+<<<<<<< HEAD
     <title>Sign in</title>
   </head>
   <body>
@@ -24,9 +25,38 @@
     <% } %>
     <% if(email) {%>
       $('#rememberme').prop( "checked", true);
+=======
+    <title>Signin</title>
+  </head>
+  <body>
+    <form id="signin" action="/signin" method="post">
+      <input type="hidden" name="forward" value="<%=locals.messages.forward%>" >
+      Email: <input type="email" id="email" name="email" value="" required><p>
+      Password: <input type="password" name="password" required> <p>
+      <label><input type="checkbox" name="rememberme" id="rememberme" value="R">Remember me</label><p>
+      <input type="submit" name="btn" value="Sign in">
+    </form>
+  </body>
+  <script src="/js/jquery.min.js" chrset="utf-8"></script>
+  <script type="text/javascript">
+  $(function(){
+    <% if (messages.warn) { %>
+      alert('<%=messages.warn%>');
+    <%
+        }
+    %>
+    <% if (email) {%>
+      $('#rememberme').prop("checked",true);
+>>>>>>> 4dec92912e6b847fcd221c3d53ad30e0c53efee7
       $('#email').val('<%=email%>');
       $('#password').focus();
     <% } %>
   });
+<<<<<<< HEAD
   </script>
+=======
+
+  </script>
+
+>>>>>>> 4dec92912e6b847fcd221c3d53ad30e0c53efee7
 </html>

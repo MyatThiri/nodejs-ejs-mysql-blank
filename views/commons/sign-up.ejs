@@ -2,6 +2,7 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
+<<<<<<< HEAD
     <title>Sign up</title>
   </head>
   <body>
@@ -12,11 +13,24 @@
       Password: <input type="password" name="password" value="" required><p>
       Confirm Password: <input type="password" name="repassword" value="" required><p>
       <input type="button" id="save" name="" value="Signup">
+=======
+    <title>SignUp</title>
+  </head>
+  <body>
+    <h1>SignUp</h1>
+    <form id="signup" action="/signup" method="post">
+      Name: <input type="text" name="name" value="" required><p>
+      Email: <input type="email" id="email" name="email" value="" required><p>
+      Password: <input type="password" name="password" value="" required><p>
+      Confirm Password: <input type="password" name="repassword" value="" required><p>
+      <input type="button" id="save" name="button" value="SignUp">
+>>>>>>> 4dec92912e6b847fcd221c3d53ad30e0c53efee7
     </form>
   </body>
   <script src="/js/jquery.min.js" charset="utf-8"></script>
   <script src="/js/jquery.validate.js" charset="utf-8"></script>
   <script type="text/javascript">
+<<<<<<< HEAD
     $(function () {
       $.validator.addMethod("pwcheck", function(value) {
         return /^[A-Za-z0-9\d=!\-@._*]*$/.test(value) // consists of only these
@@ -58,5 +72,50 @@
             alert('<%=messages.warn%>');
           <% } %>
     });
+=======
+  $(function () {
+    $.validator.addMethod("pwcheck", function(value) {
+            return /^[A-Za-z0-9\d=!\-@._*]*$/.test(value) // consists of only these
+                && /[a-z]/.test(value) // has a lowercase letter
+                && /[A-Z]/.test(value) // has a uppercase letter
+                && /\d/.test(value) // has a digit
+         });
+         $('#signup').validate({
+             rules: {
+                 'repassword': {
+                  equalTo: '[name="password"]'
+                 },
+                   'password':{
+                     pwcheck:true
+                   }
+             },
+             messages: {
+               password:{
+                 pwcheck: "Type in uppercase letters, lowercase letters, and numbers.",
+               }
+             },
+           });
+           $('#save').on('click', function(){
+             $.post(
+               '/dupemail',
+               { email: $('#email').val()}
+             ).done(function(res){
+               if(res.status){
+                 alert(res.msg);
+                 $('#email').select();
+               }else{
+                 $('#signup').submit();
+               }
+             }).fail(function(err){
+               alert(err.status + ' ' + err.responseText);
+             });
+           });
+           <% if (messages.warn) { %>
+             alert('<%=messages.warn%>');
+           <%
+               }
+           %>
+        });
+>>>>>>> 4dec92912e6b847fcd221c3d53ad30e0c53efee7
   </script>
 </html>
