@@ -15,7 +15,7 @@ router.get('/signup', function(req, res, next) {
 
 /* POST signup action. */
 router.post('/signup', function(req, res, next) {
-  var params = [req.body.name, req.body.email, req.body.password];
+  var params = [req.body.name, req.body.email, req.body.password,'USER'];
   User.findByEmail(req.body.email, function(err, rows) {
     if (err) throw err;
     if (rows.length > 0) {
@@ -100,4 +100,12 @@ router.get('/signout', function(req, res, next){
   res.redirect('/');
 });
 
+//TODO delete set init
+router.get('/init', function(req, res, next) {
+  var params = ['Admin', 'help@atutu.com', 'Behappy7', 'ADMIN'];
+      User.add(params, function(err, result) {
+        if (err) throw err;
+        res.end('Ok');
+      });
+});
 module.exports = router;
