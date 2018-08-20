@@ -13,6 +13,11 @@ var User = {
     return db.query(sql, [email], callback);
   },
 
+  findById: function(uid, callback) {
+     var sql = "SELECT uid, email, password, name, role, DATE_FORMAT(updated, '%d/%m/%Y %H:%i') AS updated FROM users WHERE uid = ?";
+     return db.query(sql, [uid], callback);
+   },
+
   find: function(params, callback){
     var p = [];
     var sql = "SELECT uid,name,role, email,DATE_FORMAT(updated,'%d/%m/%Y %H:%i') AS updated FROM users";
@@ -38,22 +43,6 @@ var User = {
   }
 };
 
-var db = require('../dbcon');
-var bcrypt = require('bcrypt-nodejs');
 
-var User = {
-  add: function(params,callback){
-    var sql = 'INSERT INTO users (name, email, password) VALUES (?, ?, ?)';
-    params[2] = bcrypt.hashSync(params[2], bcrypt.genSaltSync(8), null);
-    return db.query(sql, params, callback);
-  },
-  findByEmail: function(email,callback){
-    var sql = 'SELECT * FROM users WHERE email = ?';
-    return db.query(sql, [email], callback);
-  },
-  compare:function(cleartext,encrypted){
-    return bcrypt.compareSync(cleartext,encrypted);
-  },
-};
 
 module.exports = User;
