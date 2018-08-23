@@ -53,11 +53,14 @@ router.get('/signin', function(req, res, next) {
 router.post('/signin', function(req, res, next) {
   User.findByEmail(req.body.email, function(err, users) {
     if (err) next(err);
+    console.log(users[0]);
     if (users.length == 0 || !User.compare(req.body.password, users[0].password)) {
+      console.log('wrong');
       req.flash('warning', 'Email not exists or password not matched!!');
       if(req.body.forward) req.flash('forward', req.body.forward);
       res.redirect('/signin');
     } else {
+      console.log('right');
       req.session.user = {uid: users[0].uid,name: users[0].name,email: users[0].email, role: users[0].role}
       if(req.body.rememberme) res.cookie('email', users[0].email, { maxAge: 86400 * 7});
       else res.cookie('email', '', {maxAge: 0});
@@ -67,8 +70,10 @@ router.post('/signin', function(req, res, next) {
         ) ) {
         res.redirect(req.body.forward);
       }else if(users[0].role == 'ADMIN'){
+        console.log('admin');
         res.redirect('/admin');
       }else{
+        console.log('user',req.session.user);
         res.redirect('/members');
       }
     }

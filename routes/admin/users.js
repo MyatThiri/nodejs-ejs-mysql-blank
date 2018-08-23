@@ -12,7 +12,7 @@ router.all('/list', function(req, res, next) {
     if (err) next (err);
         res.render('admin/users/user-list', { title: 'User List', users: users, search:{keyword: req.body.keyword, role: req.body.role}});
       });
-    });
+    }); 
 
  router.get('/view/:id', function(req, res, next) {
  User.findById( req.params.id,function(err, user) {
