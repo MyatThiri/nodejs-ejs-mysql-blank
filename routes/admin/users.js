@@ -12,7 +12,7 @@ router.all('/list', function(req, res, next) {
     if (err) next (err);
         res.render('admin/users/user-list', { title: 'User List', users: users, search:{keyword: req.body.keyword, role: req.body.role}});
       });
-    }); 
+    });
 
  router.get('/view/:id', function(req, res, next) {
  User.findById( req.params.id,function(err, user) {
@@ -49,5 +49,28 @@ router.post('/remove', function(req, res, next) {
    req.flash('info', 'Successfully');
    res.redirect('/admin/users/list');
  });
+});
+
+router.get('/add', function(req, res, nexr){
+  res.render('admin/users/user-add',{title: 'Add User'})
+});
+
+router.post('/add', function(req, res, next) {
+  var params = [req.body.name, req.body.email, req.body.password,req.body.role];
+  User.findByEmail(req.body.email, function(err, rows){
+    if(err) throw err;
+    if(rows.length > 0){
+      req.flash('warn', 'Duplicated email!!');
+      res.redirect('/add');
+    }else{
+      User.add(params, function(err2, result){
+        if(err2) throw err2;
+        console.log(1);
+        req.flash('warn','Insert Success');
+        console.log(result);
+        res.redirect('/admin/users/view/' + result.insertId);
+      });
+    }
+  });
 });
 module.exports = router;
