@@ -7,16 +7,31 @@ var User = require('../../models/User');
 
 router.all('/list', function(req, res, next) {
   console.log('hhh');
-  var params = [req.body.keyword ||'' ,req.body.role ||''];
+  var p = {
+    currPage: Number(req.query.p) || 1,
+    perPage: Number(req.query.ps) || 3,
+    pSize: 3 // TODO page size
+  };
+  var params = [req.body.keyword ||'' ,req.body.role ||'',p.perPage, (p.currPage-1) * p.perPage ];
   var orderby = [req.body.sortField || 'updated', req.body.sortOrder || 'ASC'];
-  User.find(params, orderby, function(err, users) {
-    console.log('users',users);
+
+  User.find(params, orderby,function(err, count, users) {
     if (err) next (err);
+    p.count = count;
+     p.last = Math.ceil(count/p.perPage);
+     p.prev = (p.currPage==1)?null:(p.currPage-1);
+     p.next = (p.currPage==p.last)?null:(p.currPage+1);
+     p.pages = [];
+     var end = p.pSize * Math.ceil(p.currPage/p.perPage);
+     var start = end - p.pSize +1;
+     end = (end > p.last)?p.last:end;
+     for(var i= start; i <= end; i++) p.pages.push(i);
     res.render('admin/users/user-list', {
      title: 'User List',
      users: users,
      search:{ keyword: req.body.keyword, role: req.body.role},
-     sort: {field:orderby[0], order: orderby[1]}
+     sort: {field:orderby[0], order: orderby[1]},
+     paging: p
    });
  });
 });
