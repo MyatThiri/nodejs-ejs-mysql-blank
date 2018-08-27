@@ -18,12 +18,14 @@
 
     <h1>User List</h1>
     <form id="frm" action="/admin/users/list" method="post">
+      <input type="text" name="sortField" id="sortField" value="<%=sort.field%>">
+      <input type="text" name="sortOrder" id="sortOrder" value="<%=sort.order%>">
     <select class="" name="role">
       <option value="">All</option>
       <option value="Admin">Admin</option>
       <option value="User">User</option>
     </select>
-      <input type="search" name="keyword" value="<%= search.keyword || '' %>">
+      <input type="search" id="search" name="keyword" value="<%= search.keyword || '' %>">
       <input type="submit" name="" value="Search">
     </form>
     <br>
@@ -31,10 +33,10 @@
       <thead>
         <tr>
           <th>No</th>
-          <th>Name</th>
-          <th>Role</th>
-          <th>Email</th>
-          <th>Updated</th>
+          <th data-sort="name">Name</th>
+          <th data-sort="role">Role</th>
+          <th data-sort="email">Email</th>
+          <th data-sort="updated">Updated</th>
         </tr>
       </thead>
       <tbody>
@@ -55,9 +57,30 @@
     </table>
     <a href="/admin/users/add">Add User</a>
   </body>
+  <script src="/js/jquery.min.js" charset="utf-8"></script>
   <script type="text/javascript">
-    <% if (search.role) { %>
-      frm.role.value = '<%= search.role %>'
-    <% } %>
-  </script>
+     <% if (search.role) { %>
+       frm.role.value = '<%= search.role %>'
+     <% } %>
+     <% if (messages.info){ %>
+       alert('<%= messages.info %>');
+     <% } %>
+     $(function(){
+       console.log($('th'));
+       $('th').click(function () {
+         console.log('aaaa');
+         if(!$(this).data('sort')) return false;
+         if($ ('#sortField').val() == $(this).data('sort') ){
+           $('#sortOrder').val( ($('#sortOrder').val() == 'ASC' )?'DESC':'ASC') ;
+         } else {
+           $('#sortOrder').val('ASC');
+         }
+         $('#sortField').val($(this).data('sort'));
+         $('#frm').submit();
+       })
+       $('th[data-sort="<%=sort.field%>"]')
+        .append(' <%= (sort.order == 'ASC')? '\u25B2': '\u25BC' %>');
+     });
+
+   </script>
 </html>

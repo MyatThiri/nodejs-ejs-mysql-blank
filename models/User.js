@@ -18,9 +18,11 @@ var User = {
      return db.query(sql, [uid], callback);
    },
 
-  find: function(params, callback){
+  find: function(params, orderby, callback){
+    console.log('find',orderby);
     var p = [];
     var sql = "SELECT uid,name,role, email,DATE_FORMAT(updated,'%d/%m/%Y %H:%i') AS updated FROM users";
+    sql += " ORDER BY " + orderby[0]+" "+orderby[1];
     if(params[0] != '' || params[1] != '')
     {
     sql += " WHERE";
@@ -35,8 +37,8 @@ var User = {
       p.push(params[1]);
     }
   }
-    return db.query(sql, p, callback);
-  },
+  return db.query(sql, params, callback);
+},
 
   update: function(params, callback) {
    var sql = "UPDATE users SET name =?, role = ?, updated = NOW() WHERE uid = ?";

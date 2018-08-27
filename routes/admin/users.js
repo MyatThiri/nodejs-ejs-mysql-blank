@@ -6,13 +6,20 @@ var User = require('../../models/User');
 
 
 router.all('/list', function(req, res, next) {
+  console.log('hhh');
   var params = [req.body.keyword ||'' ,req.body.role ||''];
-  User.find(params, function(err, users) {
+  var orderby = [req.body.sortField || 'updated', req.body.sortOrder || 'ASC'];
+  User.find(params, orderby, function(err, users) {
     console.log('users',users);
     if (err) next (err);
-        res.render('admin/users/user-list', { title: 'User List', users: users, search:{keyword: req.body.keyword, role: req.body.role}});
-      });
-    });
+    res.render('admin/users/user-list', {
+     title: 'User List',
+     users: users,
+     search:{ keyword: req.body.keyword, role: req.body.role},
+     sort: {field:orderby[0], order: orderby[1]}
+   });
+ });
+});
 
  router.get('/view/:id', function(req, res, next) {
  User.findById( req.params.id,function(err, user) {
